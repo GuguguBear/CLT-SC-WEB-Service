@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Star Citizen - 物品查看器</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23000'/%3E%3Crect x='20' y='40' width='60' height='20' fill='%23ff6600'/%3E%3Crect x='40' y='20' width='20' height='60' fill='%23ff6600'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mobile-responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono:wght@400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 德雷克风格背景 -->
+    <div class="drake-background">
+        <!-- CRT扫描线效果 -->
+        <div class="crt-scanlines"></div>
+        <!-- 工业网格背景 -->
+        <div class="industrial-grid"></div>
+    </div>
+
+    <!-- 侧边装饰面板 -->
+    <div class="side-panel left-panel">
+        <div class="panel-stripe"></div>
+        <div class="panel-indicators">
+            <div class="indicator active"></div>
+            <div class="indicator warning"></div>
+            <div class="indicator active"></div>
+            <div class="indicator inactive"></div>
+            <div class="indicator active"></div>
+        </div>
+        <div class="panel-text">
+            <div class="panel-line">SYS ONLINE</div>
+            <div class="panel-line">PWR 98%</div>
+            <div class="panel-line">NET CONN</div>
+        </div>
+    </div>
+
+    <div class="side-panel right-panel">
+        <div class="panel-stripe"></div>
+        <div class="panel-indicators">
+            <div class="indicator active"></div>
+            <div class="indicator active"></div>
+            <div class="indicator warning"></div>
+            <div class="indicator active"></div>
+            <div class="indicator inactive"></div>
+        </div>
+        <div class="panel-text">
+            <div class="panel-line">AUTH READY</div>
+            <div class="panel-line">SEC LEVEL 2</div>
+            <div class="panel-line">TERM ACTIVE</div>
+        </div>
+    </div>
+
+    <!-- 登录界面 -->
+    <div id="loginScreen" class="login-screen">
+        <div class="terminal-container">
+            <!-- 终端标题栏 -->
+            <div class="terminal-header">
+                <div class="terminal-title">WEYLAND-YUTANI CORP</div>
+                <div class="terminal-info">
+                    <span>BUILD 2.718.281</span>
+                    <span class="terminal-symbol">◆</span>
+                    <span>SECURE TERMINAL</span>
+                </div>
+            </div>
+
+            <!-- 系统信息面板 -->
+            <div class="system-info-panel">
+                <div class="info-grid">
+                    <div class="info-cell">
+                        <span class="info-label">SYSTEM:</span>
+                        <span class="info-value">ONLINE</span>
+                    </div>
+                    <div class="info-cell">
+                        <span class="info-label">UPTIME:</span>
+                        <span class="info-value uptime-counter">00:00:00</span>
+                    </div>
+                    <div class="info-cell">
+                        <span class="info-label">CONN:</span>
+                        <span class="info-value">SECURE</span>
+                    </div>
+                    <div class="info-cell">
+                        <span class="info-label">AUTH:</span>
+                        <span class="info-value">REQUIRED</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 主标题 -->
+            <div class="main-title">
+                <div class="company-logo">
+                    <div class="logo-line"></div>
+                    <div class="logo-text">STAR CITIZEN</div>
+                    <div class="logo-line"></div>
+                </div>
+                <div class="subtitle">
+                    <span class="typewriter-text"></span>
+                    <span class="cursor">█</span>
+                </div>
+            </div>
+
+            <!-- 安全警告 -->
+            <div class="security-warning">
+                <div class="warning-bar"></div>
+                <div class="warning-text">WARNING: UNAUTHORIZED ACCESS PROHIBITED</div>
+                <div class="warning-bar"></div>
+            </div>
+
+            <!-- 德雷克风格标签页 -->
+            <div class="drake-tabs">
+                <button class="tab-btn active" onclick="showTab('login')">
+                    <span class="tab-bracket">[</span>
+                    <span class="tab-text">LOGIN</span>
+                    <span class="tab-bracket">]</span>
+                </button>
+                <button class="tab-btn" onclick="showTab('register')">
+                    <span class="tab-bracket">[</span>
+                    <span class="tab-text">REGISTER</span>
+                    <span class="tab-bracket">]</span>
+                </button>
+                <button class="tab-btn" onclick="showTab('recover')">
+                    <span class="tab-bracket">[</span>
+                    <span class="tab-text">RECOVER</span>
+                    <span class="tab-bracket">]</span>
+                </button>
+            </div>
+
+            <!-- 登录标签内容 -->
+            <div id="loginTab" class="tab-content active">
+                <form id="loginForm" class="auth-form">
+                    <div class="form-section">
+                        <div class="field-label">User ID</div>
+                        <div class="input-container">
+                            <span class="input-prompt">></span>
+                            <input type="text" id="loginUsername" placeholder="Enter Username" required>
+                            <div class="input-line"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <div class="field-label">Password</div>
+                        <div class="input-container">
+                            <span class="input-prompt">></span>
+                            <input type="password" id="loginPassword" placeholder="Enter Password" required>
+                            <div class="input-line"></div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="terminal-btn">
+                        <span class="btn-bracket">[</span>
+                        <span class="btn-text">AUTHENTICATE</span>
+                        <span class="btn-bracket">]</span>
+                        <div class="btn-processing" style="display: none;">PROCESSING...</div>
+                    </button>
+                </form>
+            </div>
+
+            <!-- 注册标签内容 -->
+            <div id="registerTab" class="tab-content">
+                <form id="registerForm" class="auth-form">
+                    <div class="form-section">
+                        <div class="field-label">New User ID</div>
+                        <div class="input-container">
+                            <span class="input-prompt">></span>
+                            <input type="text" id="registerUsername" placeholder="Enter Username" required>
+                            <div class="input-line"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <div class="field-label">Password</div>
+                        <div class="input-container">
+                            <span class="input-prompt">></span>
+                            <input type="password" id="registerPassword" placeholder="Enter Password" required>
+                            <div class="input-line"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <div class="field-label">Confirm Password</div>
+                        <div class="input-container">
+                            <span class="input-prompt">></span>
+                            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+                            <div class="input-line"></div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="terminal-btn">
+                        <span class="btn-bracket">[</span>
+                        <span class="btn-text">CREATE ACCOUNT</span>
+                        <span class="btn-bracket">]</span>
+                        <div class="btn-processing" style="display: none;">PROCESSING...</div>
+                    </button>
+
+                    <!-- 恢复代码显示 -->
+                    <div id="recoveryCode" class="recovery-code" style="display: none;">
+                        <div class="recovery-header">
+                            <h3>Security Recovery Code</h3>
+                        </div>
+                        <div class="code-display"></div>
+                        <div class="warning">
+                            ◆ Code copied to clipboard<br>
+                            ◆ Save this code in a secure location<br>
+                            ◆ Required for password recovery
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 密码重置标签内容 -->
+            <div id="recoverTab" class="tab-content">
+                <form id="recoverForm" class="auth-form">
+                    <div class="form-section">
+                        <div class="field-label">User ID</div>
+                        <div class="input-container">
+                            <span class="input-prompt">></span>
+                            <input type="text" id="recoverUsername" placeholder="Enter Username" required>
+                            <div class="input-line"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <div class="field-label">Recovery Code</div>
+                        <div class="input-container">
+                            <span class="input-prompt">></span>
+                            <input type="text" id="recoverCode" placeholder="Enter Recovery Code" required>
+                            <div class="input-line"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-section">
+                        <div class="field-label">New Password</div>
+                        <div class="input-container">
+                            <span class="input-prompt">></span>
+                            <input type="password" id="newPassword" placeholder="Enter New Password" required>
+                            <div class="input-line"></div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="terminal-btn">
+                        <span class="btn-bracket">[</span>
+                        <span class="btn-text">RESET PASSWORD</span>
+                        <span class="btn-bracket">]</span>
+                        <div class="btn-processing" style="display: none;">PROCESSING...</div>
+                    </button>
+                </form>
+            </div>
+
+            <!-- 底部状态栏 -->
+            <div class="status-bar">
+                <span class="status-item">TERM_A7</span>
+                <span class="status-separator">|</span>
+                <span class="status-item">SEC_LVL_2</span>
+                <span class="status-separator">|</span>
+                <span class="status-item">ENC_256</span>
+                <span class="status-separator">|</span>
+                <span class="status-item">READY</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主应用界面 -->
+    <div id="mainApp" class="main-app" style="display: none;">
+        <!-- 顶部导航 -->
+        <div class="top-nav">
+            <div class="app-title">STAR CITIZEN - ITEM VIEWER</div>
+            <div class="nav-right">
+                <button class="dashboard-toggle-btn" onclick="dashboardSystem.toggleDashboard()" title="实时数据仪表板">
+                    📊 DASHBOARD
+                </button>
+                <div class="user-dropdown">
+                    <div class="user-info">
+                        <span>USER: </span>
+                        <span id="currentUsername">Unknown</span>
+                        <span class="dropdown-arrow">▼</span>
+                    </div>
+                    <div class="user-dropdown-menu">
+                        <div class="dropdown-item" onclick="window.userSettingsManager && window.userSettingsManager.showSettings()">
+                            <span class="dropdown-icon">⚙</span>
+                            设置
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-item" onclick="logout()">
+                            <span class="dropdown-icon">⏻</span>
+                            退出
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 主导航标签 -->
+        <div class="main-nav-tabs">
+            <button class="nav-tab-btn active" onclick="showMainTab('items')">
+                <span class="tab-bracket">[</span>
+                <span class="tab-text">ITEM DATABASE</span>
+                <span class="tab-bracket">]</span>
+            </button>
+            <button class="nav-tab-btn" onclick="showMainTab('trading')">
+                <span class="tab-bracket">[</span>
+                <span class="tab-text">TRADE ROUTES</span>
+                <span class="tab-bracket">]</span>
+            </button>
+        </div>
+
+        <!-- 物品数据库标签 -->
+        <div id="itemsTab" class="main-content-tab active">
+            <div class="app-container">
+                <!-- 左侧面板 -->
+                <div class="left-panel">
+                    <div class="panel-header">
+                        <div class="panel-title-bar">
+                            <div class="panel-corner top-left"></div>
+                            <div class="panel-corner top-right"></div>
+                            <h3>ITEM DATABASE</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="search-box">
+                        <span class="search-decoration">SRCH></span>
+                        <input type="text" placeholder="Search items..." onkeyup="searchItems(this.value)">
+                    </div>
+                    
+                    <!-- UEX数据状态显示 -->
+                    <div class="data-status-panel">
+                        <div class="status-indicator">
+                            <span class="status-dot uex-status-dot">●</span>
+                            <span class="status-text">UEX LIVE DATA</span>
+                        </div>
+                        <div class="last-update-time">等待数据加载...</div>
+                        <button class="refresh-data-btn" onclick="window.uexLiveDataFetcher && window.uexLiveDataFetcher.refreshData()" title="手动刷新数据">
+                            🔄 REFRESH
+                        </button>
+                    </div>
+                    
+                    <div class="items-grid" id="itemsGrid">
+                        <!-- 物品卡片将在这里动态生成 -->
+                    </div>
+                </div>
+
+                <!-- 中央面板 -->
+                <div class="center-panel">
+                    <div class="item-detail-container">
+                        <div class="item-preview">
+                            <div class="item-image">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23111'/%3E%3Crect x='50' y='90' width='100' height='20' fill='%23ff6600'/%3E%3Crect x='90' y='50' width='20' height='100' fill='%23ff6600'/%3E%3C/svg%3E" alt="No item selected">
+                            </div>
+                            <div class="item-info">
+                                <h2>SELECT AN ITEM</h2>
+                                <p>Choose an item from the database to view detailed information.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧面板 -->
+                <div class="right-panel">
+                    <div class="chat-container">
+                        <div class="chat-content">
+                            <div class="chat-header">
+                                <h3>COMM CHANNEL</h3>
+                                <span class="online-count">1 ONLINE</span>
+                            </div>
+                            <div class="chat-messages" id="chatMessages">
+                                <!-- 消息将在这里显示 -->
+                            </div>
+                            <div class="chat-input-container">
+                                <input type="text" id="chatInput" placeholder="Type message...">
+                                <button onclick="sendMessage()">SEND</button>
+                            </div>
+                        </div>
+                        <!-- 在线用户列表（全屏时显示） -->
+                        <div class="online-users-list hidden" id="onlineUsersList">
+                            <div class="users-header">
+                                <h4>ONLINE USERS (<span id="userCount">0</span>)</h4>
+                            </div>
+                            <div class="users-content" id="onlineUsers">
+                                <!-- 用户列表将在这里显示 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 贸易路线标签 -->
+        <div id="tradingTab" class="main-content-tab">
+            <div class="trade-app-container">
+                <!-- 贸易控制面板 -->
+                <div class="trade-control-panel">
+                    <div class="panel-header">
+                        <div class="panel-title-bar">
+                            <div class="panel-corner top-left"></div>
+                            <div class="panel-corner top-right"></div>
+                            <h3>TRADE PARAMETERS</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="trade-controls">
+                        <div class="control-group">
+                            <label class="control-label">MAX INVESTMENT:</label>
+                            <div class="input-container">
+                                <span class="input-prompt">$</span>
+                                <input type="number" id="maxInvestment" value="1000000" min="10000" step="10000">
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label">CARGO CAPACITY:</label>
+                            <div class="input-container">
+                                <span class="input-prompt">SCU</span>
+                                <input type="number" id="cargoCapacity" value="100" min="1" max="9999">
+                            </div>
+                        </div>
+                        
+                        <div class="control-group">
+                            <label class="control-label">SORT BY:</label>
+                            <select id="sortMethod" class="trade-select">
+                                <option value="profit">Total Profit</option>
+                                <option value="roi">ROI Percentage</option>
+                                <option value="distance">Distance</option>
+                                <option value="cost">Investment</option>
+                            </select>
+                        </div>
+                        
+                        <div class="control-buttons">
+                            <button id="analyzeRoutes" class="trade-btn">
+                                <span class="btn-bracket">[</span>
+                                <span class="btn-text">ANALYZE ROUTES</span>
+                                <span class="btn-bracket">]</span>
+                            </button>
+                            <button id="refreshPrices" class="trade-btn secondary">
+                                <span class="btn-bracket">[</span>
+                                <span class="btn-text">REFRESH PRICES</span>
+                                <span class="btn-bracket">]</span>
+                            </button>
+                            <button id="openAnalytics" class="trade-btn analytics" onclick="window.analyticsUI && window.analyticsUI.toggle()">
+                                <span class="btn-bracket">[</span>
+                                <span class="btn-text">ADVANCED ANALYTICS</span>
+                                <span class="btn-bracket">]</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 路线列表 -->
+                <div class="routes-list-panel">
+                    <div class="panel-header">
+                        <div class="panel-title-bar">
+                            <div class="panel-corner top-left"></div>
+                            <div class="panel-corner top-right"></div>
+                            <h3>OPTIMAL TRADE ROUTES</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="routes-container">
+                        <div id="routesList" class="routes-list">
+                            <!-- 路线将在这里动态生成 -->
+                            <div class="no-routes-message">
+                                <div class="no-routes-icon">📊</div>
+                                <div class="no-routes-text">Click ANALYZE ROUTES to generate optimal trading paths</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 路线详情 -->
+                <div class="route-details-panel">
+                    <div class="panel-header">
+                        <div class="panel-title-bar">
+                            <div class="panel-corner top-left"></div>
+                            <div class="panel-corner top-right"></div>
+                            <h3>ROUTE ANALYSIS</h3>
+                        </div>
+                    </div>
+                    
+                    <div class="route-details-container">
+                        <div id="routeDetails" class="route-details">
+                            <div class="no-selection-message">
+                                <div class="no-selection-icon">🛸</div>
+                                <div class="no-selection-text">Select a trade route to view detailed analysis</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 新重置代码模态框 -->
+    <div id="newCodeModal" class="new-code-modal">
+        <div class="new-code-container">
+            <div class="code-header">
+                <h2>NEW RECOVERY CODE</h2>
+                <button class="close-btn" onclick="closeNewCodeModal()">✕</button>
+            </div>
+            
+            <div class="new-code-display">
+                <div id="newRecoveryCode" class="code-text">XXXX-XXXX-XXXX</div>
+                <div class="copy-indicator">CODE COPIED TO CLIPBOARD</div>
+            </div>
+            
+            <div class="code-warning">
+                <p>◆ SAVE THIS CODE IN A SECURE LOCATION</p>
+                <p>◆ REQUIRED FOR PASSWORD RECOVERY</p>
+                <p>◆ THIS WINDOW WILL CLOSE AUTOMATICALLY</p>
+            </div>
+            
+            <button class="code-confirm-btn" onclick="closeNewCodeModal()">ACKNOWLEDGED</button>
+        </div>
+    </div>
+
+    <!-- 用户设置模态框 -->
+    <div id="userSettingsModal" class="user-settings-modal">
+        <div class="settings-container">
+            <div class="settings-header">
+                <h2>USER SETTINGS</h2>
+                <button class="close-btn" onclick="closeUserSettings()">✕</button>
+            </div>
+            
+            <div class="settings-content">
+                <div class="settings-section">
+                    <h3>Account Information</h3>
+                    
+                    <div class="setting-item">
+                        <label>New Username:</label>
+                        <input type="text" id="settingsUsername" placeholder="Enter new username">
+                        <button class="mini-btn" onclick="updateUsername()">UPDATE</button>
+                    </div>
+                    
+                    <div class="setting-item">
+                        <label>New Password:</label>
+                        <input type="password" id="settingsNewPassword" placeholder="Enter new password">
+                        <button class="mini-btn" onclick="updatePassword()">UPDATE</button>
+                    </div>
+                </div>
+                
+                <div class="settings-section">
+                    <h3>Recovery Code</h3>
+                    
+                    <div class="setting-item">
+                        <label>Current Code:</label>
+                        <div class="recovery-code-display">
+                            <span id="currentRecoveryCode">XXXX-XXXX-XXXX</span>
+                            <button class="copy-btn" onclick="copyRecoveryCode()">COPY</button>
+                        </div>
+                    </div>
+                    
+                    <button class="regenerate-btn" onclick="regenerateRecoveryCode()">
+                        GENERATE NEW CODE
+                    </button>
+                </div>
+            </div>
+            
+            <div class="settings-footer">
+                <button class="settings-close-btn" onclick="closeUserSettings()">CLOSE</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Phase 6: 核心优化模块 -->
+    <script src="js/loading-manager.js"></script>
+    <script src="js/system-optimization.js"></script>
+    <script src="js/keyboard-shortcuts.js"></script>
+    
+    <!-- 模块化JavaScript文件 -->
+    <script src="js/effects.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/user-settings.js"></script>
+    
+    <!-- UEX数据系统 -->
+    <script src="js/uex-direct-api-fetcher.js"></script>
+    <script src="js/uex-enhanced-trading.js"></script>
+    <script src="js/uex-live-data-fetcher.js"></script>
+    <script src="js/uex-data-manager.js"></script>
+    
+    <!-- 飞船和贸易系统 -->
+    <script src="js/ships-database.js"></script>
+    <script src="js/trading.js"></script>
+    <script src="js/realtime-data.js"></script>
+    <script src="js/dashboard.js"></script>
+    
+    <!-- 音频系统 -->
+    <script src="js/sound-system.js"></script>
+    <script src="js/sound-control.js"></script>
+    
+    <!-- 聊天系统 -->
+    <script src="js/socket-chat-system.js"></script>
+    <script src="js/chat-fixes.js"></script>
+    <script src="js/simple-chat-fixes.js"></script>
+    <script src="js/missing-functions-fix.js"></script>
+    
+    <!-- 分析和监控系统 -->
+    <script src="js/advanced-analytics.js"></script>
+    <script src="js/analytics-ui.js"></script>
+    <script src="js/performance-monitor-optimized.js"></script>
+    <script src="js/performance-diagnostics.js"></script>
+    
+    <!-- 用户体验模块 -->
+    <script src="js/tutorial-system.js"></script>
+    <script src="js/data-manager.js"></script>
+    <script src="js/system-status.js"></script>
+    <script src="js/system-status-check.js"></script>
+    
+    <!-- 本地化系统 -->
+    <script src="js/localization.js"></script>
+    
+    <!-- UEX贸易市场系统 -->
+    <script src="js/uex-trading-market.js"></script>
+    
+    <!-- 主系统 -->
+    <script src="js/main.js"></script>
+</body>
+</html> 

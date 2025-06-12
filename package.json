@@ -1,0 +1,27 @@
+{
+  "name": "star-citizen-uex-proxy",
+  "version": "1.0.0",
+  "description": "UEX Corp API代理服务器",
+  "main": "uex-proxy-server.js",
+  "scripts": {
+    "start": "node uex-proxy-server.js",
+    "dev": "nodemon uex-proxy-server.js"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "keywords": [
+    "star-citizen",
+    "uex",
+    "api",
+    "proxy",
+    "ships"
+  ],
+  "author": "Star Citizen Community",
+  "license": "MIT"
+}

@@ -1,0 +1,512 @@
+/* 移动端响应式设计 - Star Citizen主题 */
+
+/* 基础移动端适配 */
+@media screen and (max-width: 480px) {
+    /* iPhone 14 Plus Max 及小屏设备 */
+    
+    body {
+        font-size: 12px;
+        overflow-x: hidden;
+    }
+    
+    .main-container {
+        padding: 5px;
+        min-height: 100vh;
+    }
+    
+    .header {
+        padding: 10px 5px;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .logo-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+    }
+    
+    .logo {
+        font-size: 18px;
+    }
+    
+    .subtitle {
+        font-size: 10px;
+        text-align: center;
+    }
+    
+    .user-controls {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 5px;
+    }
+    
+    .user-controls button {
+        padding: 6px 10px;
+        font-size: 10px;
+        min-width: 80px;
+    }
+    
+    /* 导航菜单移动端适配 */
+    .navigation {
+        flex-direction: column;
+        gap: 5px;
+        padding: 10px 5px;
+    }
+    
+    .nav-item {
+        width: 100%;
+        text-align: center;
+        padding: 12px 8px;
+        font-size: 11px;
+    }
+    
+    /* 主内容区域 */
+    .main-content {
+        padding: 10px 5px;
+    }
+    
+    .content-wrapper {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    /* 左侧面板移动端适配 */
+    .left-panel {
+        width: 100%;
+        order: 2;
+    }
+    
+    .dashboard-container {
+        padding: 10px;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .dashboard-item {
+        padding: 10px;
+    }
+    
+    .dashboard-item h3 {
+        font-size: 12px;
+    }
+    
+    .dashboard-value {
+        font-size: 16px;
+    }
+    
+    /* 右侧聊天面板移动端适配 */
+    .right-panel {
+        width: 100%;
+        order: 1;
+    }
+    
+    .chat-container {
+        height: 300px;
+        margin-bottom: 15px;
+    }
+    
+    .chat-header {
+        padding: 8px 12px;
+        flex-direction: column;
+        gap: 5px;
+        align-items: flex-start;
+    }
+    
+    .chat-header h3 {
+        font-size: 14px;
+        margin: 0;
+    }
+    
+    .online-count {
+        font-size: 10px;
+    }
+    
+    #connection-indicator {
+        font-size: 9px;
+        margin: 0;
+        align-self: flex-end;
+    }
+    
+    .chat-messages {
+        height: 200px;
+        padding: 8px;
+    }
+    
+    .message {
+        margin-bottom: 8px;
+        padding: 6px;
+    }
+    
+    .message-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+    }
+    
+    .username {
+        font-size: 11px;
+    }
+    
+    .timestamp {
+        font-size: 9px;
+    }
+    
+    .message-text {
+        font-size: 11px;
+        line-height: 1.4;
+        margin-top: 4px;
+    }
+    
+    .chat-input-container {
+        padding: 8px;
+        gap: 8px;
+        flex-direction: column;
+    }
+    
+    .chat-input-container input {
+        width: 100%;
+        padding: 10px;
+        font-size: 12px;
+    }
+    
+    .chat-input-container button {
+        width: 100%;
+        padding: 12px;
+        font-size: 12px;
+    }
+    
+    /* 贸易面板移动端适配 */
+    .trade-app-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .trade-control-panel,
+    .routes-list-panel,
+    .route-details-panel {
+        width: 100%;
+    }
+    
+    .panel-header {
+        padding: 8px 12px;
+    }
+    
+    .panel-header h3 {
+        font-size: 12px;
+    }
+    
+    .trade-controls {
+        padding: 10px;
+    }
+    
+    .control-group {
+        margin-bottom: 12px;
+    }
+    
+    .control-label {
+        font-size: 10px;
+        margin-bottom: 5px;
+    }
+    
+    .input-container input,
+    .trade-select {
+        padding: 8px;
+        font-size: 12px;
+    }
+    
+    .control-buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .trade-btn {
+        padding: 12px;
+        font-size: 11px;
+    }
+    
+    /* 全屏聊天移动端适配 */
+    .chat-container.fullscreen {
+        flex-direction: column;
+        height: 100vh;
+        width: 100vw;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        display: flex !important;
+    }
+    
+    .chat-container.fullscreen .chat-header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        background: rgba(0, 20, 40, 0.95);
+        border-bottom: 2px solid rgba(0, 212, 255, 0.5);
+        flex-shrink: 0;
+    }
+    
+    .chat-container.fullscreen .chat-messages {
+        flex: 1;
+        height: auto;
+        padding: 15px;
+        overflow-y: auto;
+    }
+    
+    .chat-container.fullscreen .chat-input-container {
+        flex-direction: row;
+        padding: 15px;
+        background: rgba(0, 20, 40, 0.95);
+        border-top: 1px solid rgba(0, 212, 255, 0.3);
+        flex-shrink: 0;
+        position: relative;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
+    
+    .chat-container.fullscreen .chat-input-container input {
+        flex: 1;
+        margin-right: 10px;
+    }
+    
+    .chat-container.fullscreen .chat-input-container button {
+        width: auto;
+        padding: 10px 20px;
+        flex-shrink: 0;
+    }
+    
+    .chat-container.fullscreen .online-users-list {
+        display: none; /* 移动端全屏时隐藏用户列表 */
+    }
+    
+    /* 模态框移动端适配 */
+    .modal {
+        padding: 10px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        max-width: none;
+        margin: 20px auto;
+        padding: 15px;
+    }
+    
+    .modal h2 {
+        font-size: 16px;
+    }
+    
+    .modal input,
+    .modal button {
+        padding: 12px;
+        font-size: 12px;
+    }
+    
+    /* 教程系统移动端适配 */
+    .tutorial-overlay {
+        padding: 10px;
+    }
+    
+    .tutorial-popup {
+        width: 95%;
+        max-width: none;
+        padding: 15px;
+    }
+    
+    .tutorial-content h3 {
+        font-size: 14px;
+    }
+    
+    .tutorial-content p {
+        font-size: 11px;
+        line-height: 1.4;
+    }
+    
+    .tutorial-buttons button {
+        padding: 10px 15px;
+        font-size: 11px;
+    }
+    
+    /* 性能监控移动端适配 */
+    .performance-display {
+        font-size: 10px;
+        padding: 5px 8px;
+        top: 5px;
+        left: 5px;
+        right: auto;
+        max-width: 150px;
+    }
+    
+    /* 高级分析面板移动端适配 */
+    .analytics-container {
+        padding: 10px;
+    }
+    
+    .analytics-nav {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .analytics-nav-item {
+        padding: 8px 12px;
+        font-size: 10px;
+    }
+    
+    .analytics-content {
+        padding: 10px;
+    }
+    
+    /* 工具提示移动端适配 */
+    .tooltip {
+        font-size: 10px;
+        padding: 6px 8px;
+        max-width: 200px;
+    }
+    
+    /* 按钮组移动端适配 */
+    .btn-group {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .btn-group button {
+        width: 100%;
+    }
+}
+
+/* 中型移动设备适配 (481px - 768px) */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .content-wrapper {
+        flex-direction: column;
+    }
+    
+    .left-panel,
+    .right-panel {
+        width: 100%;
+    }
+    
+    .chat-container {
+        height: 350px;
+    }
+    
+    .trade-app-container {
+        flex-direction: column;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .chat-container.fullscreen .online-users-list {
+        width: 100%;
+        height: 120px;
+        margin-left: 0;
+        order: -1;
+    }
+}
+
+/* 横屏移动设备适配 */
+@media screen and (max-height: 500px) and (orientation: landscape) {
+    .chat-container.fullscreen {
+        flex-direction: row;
+    }
+    
+    .chat-container.fullscreen .online-users-list {
+        display: block;
+        width: 200px;
+        height: 100vh;
+        margin-left: 10px;
+        order: 1;
+    }
+    
+    .chat-container.fullscreen .chat-messages {
+        height: calc(100vh - 100px);
+    }
+}
+
+/* 触摸设备优化 */
+@media (hover: none) and (pointer: coarse) {
+    /* 增大可点击区域 */
+    button,
+    .nav-item,
+    .trade-btn,
+    .message,
+    .user-item {
+        min-height: 44px;
+    }
+    
+    /* 移除hover效果，使用focus */
+    button:hover,
+    .nav-item:hover {
+        background: initial;
+    }
+    
+    button:focus,
+    .nav-item:focus {
+        background: rgba(0, 212, 255, 0.2);
+        outline: 2px solid #00d4ff;
+    }
+    
+    /* 优化滚动 */
+    .chat-messages,
+    .users-content,
+    .routes-list {
+        -webkit-overflow-scrolling: touch;
+        scroll-behavior: smooth;
+    }
+}
+
+/* 高分辨率移动设备 */
+@media screen and (max-width: 480px) and (-webkit-min-device-pixel-ratio: 2) {
+    /* 调整字体大小以适应高分辨率 */
+    body {
+        font-size: 13px;
+    }
+    
+    .logo {
+        font-size: 20px;
+    }
+    
+    .message-text {
+        font-size: 12px;
+    }
+    
+    /* 优化图标显示 */
+    .users-icon,
+    .status-dot {
+        transform: scale(1.2);
+    }
+}
+
+/* 暗色模式适配 */
+@media (prefers-color-scheme: dark) {
+    /* 已经是暗色主题，确保在移动端保持一致 */
+    .modal-content,
+    .tutorial-popup {
+        background: rgba(0, 20, 40, 0.98);
+        border: 1px solid rgba(0, 212, 255, 0.3);
+    }
+}
+
+/* 减少动画以节省电量 */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .status-dot.connecting {
+        animation: none;
+        background: #ffaa00;
+    }
+    
+    .user-status {
+        animation: none;
+    }
+} 

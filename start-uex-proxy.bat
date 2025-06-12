@@ -1,0 +1,9 @@
+@echo off
+echo 启动UEX代理服务器...
+echo.
+echo 1. 安装依赖包...
+npm install express cors axios
+echo.
+echo 2. 启动代理服务器...
+node uex-proxy-server.js
+pause 

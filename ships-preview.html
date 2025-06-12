@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>飞船数据库预览 - Star Citizen</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23000'/%3E%3Crect x='20' y='40' width='60' height='20' fill='%23ff6600'/%3E%3Crect x='40' y='20' width='20' height='60' fill='%23ff6600'/%3E%3C/svg%3E">
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono:wght@400&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Share Tech Mono', 'Courier Prime', monospace;
+            background: #000000;
+            color: #ff6600;
+            line-height: 1.4;
+            font-size: 12px;
+            letter-spacing: 0.05em;
+            overflow-x: hidden;
+        }
+
+        /* 德雷克风格背景 */
+        .drake-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(ellipse at center, #0a0a0a 0%, #000000 100%);
+            z-index: -2;
+        }
+
+        .crt-scanlines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(transparent 50%, rgba(255, 102, 0, 0.02) 50%);
+            background-size: 100% 4px;
+            animation: scan 0.1s linear infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* 主容器 */
+        .container {
+            display: flex;
+            height: 100vh;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* 左侧面板 */
+        .left-panel {
+            width: 300px;
+            background: rgba(17, 17, 17, 0.8);
+            border: 2px solid #ff6600;
+            border-radius: 5px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .left-panel h3 {
+            color: #ff6600;
+            margin-bottom: 15px;
+            text-align: center;
+            border-bottom: 2px solid #ff6600;
+            padding-bottom: 10px;
+        }
+
+        /* 搜索框 */
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            width: 100%;
+            background: #000000;
+            border: 2px solid #ff6600;
+            color: #ff6600;
+            padding: 8px;
+            font-family: inherit;
+            font-size: 12px;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 102, 0, 0.5);
+        }
+
+        /* 主内容区域 */
+        .main-content {
+            flex: 1;
+            display: flex;
+            gap: 20px;
+        }
+
+        .ships-grid-container {
+            flex: 1;
+            background: rgba(17, 17, 17, 0.8);
+            border: 2px solid #ff6600;
+            border-radius: 5px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .ships-grid-container h3 {
+            color: #ff6600;
+            margin-bottom: 15px;
+            text-align: center;
+            border-bottom: 2px solid #ff6600;
+            padding-bottom: 10px;
+        }
+
+        #itemsGrid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            padding: 10px 0;
+        }
+
+        /* 右侧详情面板 */
+        .right-panel {
+            width: 400px;
+            background: rgba(17, 17, 17, 0.8);
+            border: 2px solid #ff6600;
+            border-radius: 5px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .right-panel h3 {
+            color: #ff6600;
+            margin-bottom: 15px;
+            text-align: center;
+            border-bottom: 2px solid #ff6600;
+            padding-bottom: 10px;
+        }
+
+        .item-detail-container {
+            min-height: 400px;
+        }
+
+        .no-selection {
+            text-align: center;
+            color: #666666;
+            padding: 50px 20px;
+        }
+
+        .no-selection h4 {
+            margin-bottom: 10px;
+            color: #ff6600;
+        }
+
+        /* 返回按钮 */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff6600;
+            color: #000000;
+            border: none;
+            padding: 10px 20px;
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+        }
+
+        .back-btn:hover {
+            background: #ff8833;
+            box-shadow: 0 0 15px rgba(255, 102, 0, 0.5);
+        }
+
+        /* 状态指示器 */
+        .status-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid #ff6600;
+            padding: 10px;
+            border-radius: 3px;
+            font-size: 11px;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #00ff00;
+            margin-right: 5px;
+            animation: statusBlink 2s ease-in-out infinite;
+        }
+
+        @keyframes statusBlink {
+            0%, 90%, 100% { opacity: 1; }
+            95% { opacity: 0.3; }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 10px;
+            }
+            
+            .left-panel,
+            .right-panel {
+                width: 100%;
+                height: auto;
+                max-height: 300px;
+            }
+            
+            .main-content {
+                flex-direction: column;
+            }
+            
+            #itemsGrid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 德雷克风格背景 -->
+    <div class="drake-background">
+        <div class="crt-scanlines"></div>
+    </div>
+
+    <!-- 返回按钮 -->
+    <button class="back-btn" onclick="window.location.href='index.html'">
+        返回主页
+    </button>
+
+    <!-- 主容器 -->
+    <div class="container">
+        <!-- 左侧过滤面板 -->
+        <div class="left-panel">
+            <h3>飞船过滤器</h3>
+            <div class="search-box">
+                <input type="text" placeholder="Search ships..." id="searchInput">
+            </div>
+            <!-- 过滤器将在这里动态生成 -->
+        </div>
+
+        <!-- 主内容区域 -->
+        <div class="main-content">
+            <!-- 飞船网格 -->
+            <div class="ships-grid-container">
+                <h3>Star Citizen 飞船数据库</h3>
+                <div id="itemsGrid">
+                    <div style="text-align: center; padding: 50px; color: #666666;">
+                        正在加载飞船数据...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧详情面板 -->
+        <div class="right-panel">
+            <h3>飞船详情</h3>
+            <div class="item-detail-container">
+                <div class="no-selection">
+                    <h4>选择一艘飞船</h4>
+                    <p>点击左侧的飞船卡片查看详细信息</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 状态指示器 -->
+    <div class="status-indicator">
+        <span class="status-dot"></span>
+        飞船数据库已加载
+    </div>
+
+    <!-- 飞船数据库脚本 -->
+    <script src="js/ships-database.js"></script>
+    
+    <script>
+        // 初始化飞船数据库预览
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 飞船数据库预览页面正在初始化...');
+            
+            try {
+                // 等待飞船数据库加载
+                if (window.shipsDatabase) {
+                    await window.shipsDatabase.init();
+                    console.log('✅ 飞船数据库预览已加载完成');
+                    
+                    // 更新状态指示器
+                    const statusIndicator = document.querySelector('.status-indicator');
+                    statusIndicator.innerHTML = `
+                        <span class="status-dot"></span>
+                        ${window.shipsDatabase.getShips().length} 艘飞船已加载
+                    `;
+                } else {
+                    throw new Error('飞船数据库脚本未加载');
+                }
+            } catch (error) {
+                console.error('❌ 飞船数据库预览初始化失败:', error);
+                
+                // 显示错误信息
+                const itemsGrid = document.getElementById('itemsGrid');
+                itemsGrid.innerHTML = `
+                    <div style="text-align: center; padding: 50px; color: #ff3300;">
+                        <h4>加载失败</h4>
+                        <p>${error.message}</p>
+                        <button onclick="window.location.reload()" style="margin-top: 10px; padding: 5px 10px; background: #ff6600; color: #000; border: none; cursor: pointer;">
+                            重新加载
+                        </button>
+                    </div>
+                `;
+                
+                // 更新状态指示器
+                const statusIndicator = document.querySelector('.status-indicator');
+                statusIndicator.innerHTML = `
+                    <span class="status-dot" style="background: #ff3300;"></span>
+                    加载失败
+                `;
+            }
+        });
+
+        // 键盘快捷键
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html> 
