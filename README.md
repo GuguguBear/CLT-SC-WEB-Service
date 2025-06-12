@@ -141,7 +141,7 @@ UEX Corp API → UEX Direct API Fetcher → Data Processing → UI Display
 ### Token配置
 ```javascript
 // 在 js/uex-direct-api-fetcher.js 中配置
-const UEX_TOKEN = 'd55bc23a6fee307de57c1b07a24c25fe7996444d';
+const UEX_TOKEN = '这里写你自己的 Token';
 ```
 
 ---
@@ -284,7 +284,7 @@ setupOfflineChat() {
 
 ## 🔄 更新历史
 
-### 版本 2.0.1 (2024-12-06)
+### 版本 2.0.1 (2025-06-12)
 #### 🔧 紧急修复
 - **修复F12控制台错误**: 完全解决 `ships-database.js` 语法错误
 - **修复聊天系统**: 补充缺失的 `setupOfflineChat` 方法
@@ -298,7 +298,7 @@ setupOfflineChat() {
 - ✅ 飞船图片SVG显示正常
 - ✅ UEX数据系统运行稳定
 
-### 版本 2.0.0 (2024-12-06)
+### 版本 2.0.0 (2025-06-12)
 #### 🚀 重大更新
 - **UEX API完全集成**: 替换所有静态数据为UEX实时数据
 - **增强贸易系统**: 全新的贸易路线分析和利润计算
@@ -372,10 +372,9 @@ setupOfflineChat() {
 
 ## 📞 联系信息
 
-- **项目维护者**: [您的姓名]
-- **邮箱**: your.email@example.com
-- **GitHub**: https://github.com/yourusername/CLT-SC-Service
-- **Discord**: 项目交流群
+- **项目维护者**: GuguguBear
+- **GitHub**: https://github.com/GuguguBear/CLT-SC-Service
+- **QQ**: 9236059
 
 ---
 
@@ -407,5 +406,5 @@ setupOfflineChat() {
 
 ---
 
-*最后更新时间: 2024-12-06*
+*最后更新时间: 2025-06-12*
 *版本: 2.0.0* 
